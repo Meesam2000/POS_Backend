@@ -2,7 +2,7 @@ const db = require("../config/db");
 const products = {
 
     createProductsTable() {
-        var sql = "CREATE TABLE IF NOT EXISTS `gpos`.`products` ( `productid` INT UNSIGNED NOT NULL AUTO_INCREMENT, `productname` VARCHAR(45) NOT NULL, `productdesc` VARCHAR(255) NOT NULL, `productprice` INT UNSIGNED NOT NULL, `productpurchaseprice` INT UNSIGNED NOT NULL, `productqty` INT UNSIGNED NOT NULL, `ctgname` VARCHAR(45) NOT NULL, `subctgname` VARCHAR(45) NOT NULL, `productimage` VARCHAR(255) NOT NULL, PRIMARY KEY(`productid`));";
+        var sql = "CREATE TABLE IF NOT EXISTS `pos`.`products` ( `productid` INT UNSIGNED NOT NULL AUTO_INCREMENT, `productname` VARCHAR(45) NOT NULL, `productdesc` VARCHAR(255) NOT NULL, `productprice` INT UNSIGNED NOT NULL, `productpurchaseprice` INT UNSIGNED NOT NULL, `productqty` INT UNSIGNED NOT NULL, `ctgname` VARCHAR(45) NOT NULL, `subctgname` VARCHAR(45) NOT NULL, `productimage` VARCHAR(255) NOT NULL, PRIMARY KEY(`productid`));";
         db.query(sql, function (err, result) {
             if (err) {
                 console.log(err.message);
@@ -16,7 +16,7 @@ const products = {
         console.log("product wala ma aya ha");
         return new Promise(function (resolve, reject) {
             db.query(
-                "INSERT INTO `gpos`.`products` (productname,productdesc,productprice,productpurchaseprice,productqty,ctgname,subctgname,productimage) VALUES (?,?,?,?,?,?,?,?)", [obj.productName, obj.productDesc,obj.productPrice,obj.productPurchasePrice,obj.productQty,obj.productCtgName,obj.productSubCtgName,filename],
+                "INSERT INTO `pos`.`products` (productname,productdesc,productprice,productpurchaseprice,productqty,ctgname,subctgname,productimage) VALUES (?,?,?,?,?,?,?,?)", [obj.productName, obj.productDesc,obj.productPrice,obj.productPurchasePrice,obj.productQty,obj.productCtgName,obj.productSubCtgName,filename],
                 (err, result) => {
                     if (err) {
                         console.log("reject hoa ha "+err.message);
@@ -33,7 +33,7 @@ const products = {
     {
         return new Promise(function (resolve, reject) {
             db.query(
-                "SELECT * FROM  `gpos`.`products`",
+                "SELECT * FROM  `pos`.`products`",
                 (err, result) => {
                     if (err) {
                         reject(new Error("Error rows is undefined"));
@@ -47,7 +47,7 @@ const products = {
     deleteProduct(productid) {
         return new Promise(function(resolve, reject) {
             db.query(
-                "DELETE FROM `gpos`.`products` where `productid`=?;",productid,
+                "DELETE FROM `pos`.`products` where `productid`=?;",productid,
                 (err, result) => {
                     if (err) {
                         reject(new Error("Error rows is undefined"));
@@ -63,7 +63,7 @@ const products = {
         const obj =JSON.parse(JSON.stringify(obj1))
         return new Promise(function(resolve, reject) {
         db.query(
-            "UPDATE `gpos`.`products` set productname=?,productdesc=?,productprice=?,productpurchaseprice=?,productqty=?,ctgname=?,subctgname=?,productimage=? where productid=?", [obj.productName, obj.productDesc,obj.productPrice,obj.productPurchasePrice,obj.productQty,obj.productCtgName,obj.productSubCtgName,filename,obj.productId],
+            "UPDATE `pos`.`products` set productname=?,productdesc=?,productprice=?,productpurchaseprice=?,productqty=?,ctgname=?,subctgname=?,productimage=? where productid=?", [obj.productName, obj.productDesc,obj.productPrice,obj.productPurchasePrice,obj.productQty,obj.productCtgName,obj.productSubCtgName,filename,obj.productId],
             (err, result) => {
                 if (err) {
                     reject(false)
@@ -79,7 +79,7 @@ const products = {
     {
         return new Promise(function (resolve, reject) {
             db.query(
-                'SELECT * FROM gpos.products where productname like ?', '%' + search + '%',
+                'SELECT * FROM pos.products where productname like ?', '%' + search + '%',
                 (err, result) => {
                     if (err) {
                         reject(new Error("Something went wrong while searching!!"));

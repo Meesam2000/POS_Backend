@@ -2,7 +2,7 @@ const db = require("../config/db")
 const nodemailer = require("../config/nodemailer")
 const faq = {
     createFaqTable() {
-        var sql = "CREATE TABLE IF NOT EXISTS `gpos`.`faq` ( `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,`name` VARCHAR(450) NOT NULL,`email` VARCHAR(450) NOT NULL, `question` VARCHAR(450) NOT NULL,`answer` VARCHAR(450), PRIMARY KEY(`id`));";
+        var sql = "CREATE TABLE IF NOT EXISTS `pos`.`faq` ( `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,`name` VARCHAR(450) NOT NULL,`email` VARCHAR(450) NOT NULL, `question` VARCHAR(450) NOT NULL,`answer` VARCHAR(450), PRIMARY KEY(`id`));";
         db.query(sql, function(err, result) {
             if (err) throw err;
             console.log("faq Table created");
@@ -13,7 +13,7 @@ const faq = {
         console.log(tempObj);
         return new Promise(function (resolve, reject) {
             db.query(
-                "INSERT INTO `gpos`.`faq` (name,email,question) VALUES (?,?,?)", [tempObj.name,tempObj.email,tempObj.body],
+                "INSERT INTO `pos`.`faq` (name,email,question) VALUES (?,?,?)", [tempObj.name,tempObj.email,tempObj.body],
                 (err, result) => {
                     if (err) {
                         reject(false);
@@ -28,7 +28,7 @@ const faq = {
     getAllFaqs() {
         return new Promise(function (resolve, reject) {
             db.query(
-                "SELECT * FROM  `gpos`.`faq`",
+                "SELECT * FROM  `pos`.`faq`",
                 (err, result) => {
                     if (err) {
                         reject(new Error("Error rows is undefined"));

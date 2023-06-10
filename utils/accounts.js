@@ -16,6 +16,7 @@ const account = {
             bcrypt.hash(password, saltRound, (err, hash) => {
                 if (!err) {
                     const token = jwt.sign({ gmail }, "login");
+                    console.log("------JWTtoken--------", token);
                     db.query(
                         "INSERT INTO accounts (fname,lname,phone,email,password,company,confirmationcode) VALUES (?,?,?,?,?,?,?)", [fname, lname, phone, gmail, hash, company, token],
                         (err, result) => {
@@ -42,6 +43,8 @@ const account = {
 
             const username = obj.username;
             const password = obj.password;
+            console.log("------username------", username);
+            console.log("----------password--------", password);
             db.query("SELECT * FROM accounts where email=?;", username, (err, result) => {
                 if (err) {
                     console.log(err);
@@ -50,9 +53,10 @@ const account = {
                     console.log("No value");
                     reject(err)
                 } else if (result.length > 0) {
-                    console.log(result);
+                    console.log("-------result--------",result);
                     bcrypt.compare(password, result[0].password, (error, resp) => {
-                        if (resp && result[0].status == 'active') {
+                        if (resp) {
+                            console.log("password matched");
                             resolve(result)
                         } else if (error) {
                             reject(error)
@@ -98,7 +102,7 @@ const account = {
                 if (!err) {
                     const status = "active";
                     db.query(
-                        "UPDATE `gpos`.`accounts` SET status=? where confirmationcode=?", [status, confirmationCode],
+                        "UPDATE `pos`.`accounts` SET status=? where confirmationcode=?", [status, confirmationCode],
                         (err, result) => {
                             if (err) {
                                 reject(false)

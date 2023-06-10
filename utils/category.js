@@ -1,7 +1,7 @@
 const db = require("../config/db");
 const category = {
     createCategoryT() {
-        var sql = "CREATE TABLE IF NOT EXISTS `gpos`.`category` ( `idctg` INT NOT NULL AUTO_INCREMENT, `ctgname` VARCHAR(45) NOT NULL, `ctgdescription` VARCHAR(255) NOT NULL, `ctgdate` DATE NOT NULL, PRIMARY KEY(`idctg`))";
+        var sql = "CREATE TABLE IF NOT EXISTS `pos`.`category` ( `idctg` INT NOT NULL AUTO_INCREMENT, `ctgname` VARCHAR(45) NOT NULL, `ctgdescription` VARCHAR(255) NOT NULL, `ctgdate` DATE NOT NULL, PRIMARY KEY(`idctg`))";
         db.query(sql, function (err, result) {
             if (err) throw err;
             console.log("Table created");
@@ -12,7 +12,7 @@ const category = {
         return new Promise(function (resolve, reject) {
             const date = new Date()
             db.query(
-                "INSERT INTO `gpos`.`category` (ctgname,ctgdescription,ctgdate) VALUES (?,?,?)", [obj.ctgName, obj.ctgDescription, date],
+                "INSERT INTO `pos`.`category` (ctgname,ctgdescription,ctgdate) VALUES (?,?,?)", [obj.ctgName, obj.ctgDescription, date],
                 (err, result) => {
                     if (err) {
                         reject(false);
@@ -27,7 +27,7 @@ const category = {
     getAllCategoryData() {
         return new Promise(function (resolve, reject) {
             db.query(
-                "SELECT * FROM  `gpos`.`category`",
+                "SELECT * FROM  `pos`.`category`",
                 (err, result) => {
                     if (err) {
                         reject(new Error("Error rows is undefined"));
@@ -44,14 +44,14 @@ const category = {
        
         return new Promise(function(resolve, reject) {
             db.query(
-                "DELETE FROM `gpos`.`subcategory` where `ctgname`=? ;",ctgname,
+                "DELETE FROM `pos`.`subcategory` where `ctgname`=? ;",ctgname,
                 (err, result) => {
                     if (err) {
                         console.log(err)
                         reject(new Error("Error rows is undefined"));
                     } else {
                         db.query(
-                            "DELETE FROM `gpos`.`category` where `ctgname`=? ;",ctgname,
+                            "DELETE FROM `pos`.`category` where `ctgname`=? ;",ctgname,
                             (err, result) => {
                                 if (err) {
                                     console.log(err)
